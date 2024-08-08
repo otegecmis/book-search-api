@@ -1,0 +1,10 @@
+process.env.PORT = "3000";
+process.env.ORIGIN = "http://localhost:3000";
+process.env.NODE_ENV = "development";
+process.env.POSTGRES_URI = "postgres://postgres:password@localhost:5432/test";
+process.env.REDIS_HOST = "localhost";
+process.env.REDIS_PORT = "6379";
+process.env.ACCESS_TOKEN_SECRET = "access-token-secret";
+process.env.ACCESS_TOKEN_EXPIRATION = "15m";
+process.env.REFRESH_TOKEN_SECRET = "refresh-token-secret";
+process.env.REFRESH_TOKEN_EXPIRATION = "7d";
