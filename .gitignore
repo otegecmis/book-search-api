@@ -1,0 +1,11 @@
+# files
+.env
+*.log
+.DS_Store
+
+# folders
+logs
+.zed
+.idea
+api-docs
+node_modules
