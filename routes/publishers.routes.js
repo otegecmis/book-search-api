@@ -4,7 +4,7 @@ import publishersController from "../controllers/publishers.controller.js";
 import publishersValidator from "../validators/publishers.validator.js";
 
 import rateLimiters from "../middleware/rate-limit.middleware.js";
-import { auth } from "../middleware/auth-check.middleware.js";
+import authCheck from "../middleware/auth-check.middleware.js";
 
 const router = express.Router();
 
@@ -38,8 +38,8 @@ const router = express.Router();
 router.post(
   "/",
   rateLimiters.database,
-  auth.isSignIn,
-  auth.isAdmin,
+  authCheck.isSignIn,
+  authCheck.isAdmin,
   publishersValidator.createPublisher,
   publishersController.createPublisher
 );
@@ -129,8 +129,8 @@ router.get(
 router.put(
   "/:publisherID",
   rateLimiters.database,
-  auth.isSignIn,
-  auth.isAdmin,
+  authCheck.isSignIn,
+  authCheck.isAdmin,
   publishersValidator.updatePublisher,
   publishersController.updatePublisher
 );
@@ -157,8 +157,8 @@ router.put(
 router.delete(
   "/:publisherID",
   rateLimiters.database,
-  auth.isSignIn,
-  auth.isAdmin,
+  authCheck.isSignIn,
+  authCheck.isAdmin,
   publishersValidator.deletePublisher,
   publishersController.deletePublisher
 );
