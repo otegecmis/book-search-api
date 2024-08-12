@@ -76,6 +76,37 @@ class UsersService {
   async isValidPassword(plainPassword, hashedPassword) {
     return await bcrypt.compare(plainPassword, hashedPassword);
   }
+
+  async updateUser(userID, data) {
+    return {
+      message: "WIP: This is a placeholder response for the updateUser method.",
+      userID: userID,
+      data: data,
+    };
+  }
+
+  async updateEmail(userID, data) {
+    return {
+      message: "WIP: This is a placeholder response for the updateEmail method.",
+      userID: userID,
+      data: data,
+    };
+  }
+
+  async updatePassword(userID, data) {
+    return {
+      message: "WIP: This is a placeholder response for the updatePassword method.",
+      userID: userID,
+      data: data,
+    };
+  }
+
+  async deactivateUser(userID) {
+    return {
+      message: "WIP: This is a placeholder response for the deactivateUser method.",
+      userID: userID,
+    };
+  }
 }
 
 export default new UsersService();
