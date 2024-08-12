@@ -3,6 +3,7 @@ import express from "express";
 import indexController from "../controllers/index.controller.js";
 
 import authRotes from "./auth.routes.js";
+import usersRoutes from "./users.routes.js";
 import authorsRoutes from "./authors.routes.js";
 import publisherRoutes from "./publishers.routes.js";
 import booksRoutes from "./books.routes.js";
@@ -14,6 +15,7 @@ router.get("/", indexController.welcomePage);
 
 router
   .use("/auth", authRotes)
+  .use("/users", usersRoutes)
   .use("/authors", authorsRoutes)
   .use("/publishers", publisherRoutes)
   .use("/books", booksRoutes)

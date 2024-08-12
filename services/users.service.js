@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import createError from "http-errors";
+import gravatar from "gravatar";
 
 import userRepository from "../repositories/user.repository.js";
 
@@ -45,6 +46,24 @@ class UsersService {
    */
   async getUserByID(id) {
     return await userRepository.getUserByID(id);
+  }
+
+  /**
+   * Retrieves a user by their ID and formats the response.
+   * @param {string} userID - The ID of the user to retrieve.
+   * @returns {Promise<object>} A promise that resolves to an object containing the user's details including their gravatar URL.
+   * @throws {Error} If the user cannot be retrieved or if an error occurs during the process.
+   */
+  async getUser(userID) {
+    const user = await this.getUserByID(userID);
+
+    return {
+      userID: user.id,
+      gravatar: gravatar.url(user.email, { s: "200", r: "pg", d: "mm", protocol: "https" }),
+      name: user.name,
+      surname: user.surname,
+      createdAt: user.createdAt,
+    };
   }
 
   /**
