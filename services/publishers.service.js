@@ -1,6 +1,7 @@
 import createError from "http-errors";
 
 import publisherRepository from "../repositories/publisher.repository.js";
+import booksService from "./books.service.js";
 
 /**
  * PublishersService class.
@@ -59,14 +60,21 @@ class PublishersService {
   }
 
   /**
-   * Deletes a publisher by ID.
+   * Deletes a publisher by their ID if they have no books associated with them.
    * @param {string} publisherID - The ID of the publisher to delete.
-   * @returns {Promise<void>} A promise that resolves when the publisher is deleted.
+   * @returns {Promise<object>} A promise that resolves to the deleted publisher object.
    * @throws {createError.NotFound} If the publisher does not exist.
+   * @throws {createError.Conflict} If the publisher has books associated with them and cannot be deleted.
    * @throws {createError.InternalServerError} If an error occurs while deleting the publisher.
    */
   async deletePublisher(publisherID) {
     const findPublisher = await this.getPublisherByID(publisherID);
+    const countBooksByPublisherID = await booksService.countBooksByPublisherID(findPublisher.id);
+
+    if (countBooksByPublisherID > 0) {
+      throw createError.Conflict("Publisher has books and cannot be deleted.");
+    }
+
     return await publisherRepository.deletePublisher(findPublisher.id);
   }
 }
