@@ -106,4 +106,92 @@ router.get(
   booksController.getBookByISBN
 );
 
+/**
+ * @swagger
+ * /api/books/{bookID}:
+ *   put:
+ *     summary: Update Book by ID
+ *     description: Only authorized users can access this endpoint.
+ *     tags: [Books]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: bookID
+ *         schema:
+ *           type: string
+ *         required: true
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               authorID:
+ *                 type: integer
+ *               image:
+ *                 type: string
+ *               publisherID:
+ *                 type: integer
+ *               published:
+ *                 type: string
+ *               isbn13:
+ *                 type: string
+ *               isbn10:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *             example:
+ *               title: "The Lord of the Rings: The Fellowship of the Ring"
+ *               authorID: 1
+ *               image: https://harpercollins.co.uk/cdn/shop/files/x9780008537722.jpg
+ *               publisherID: 1
+ *               published: "2012"
+ *               isbn13: "9780008537722"
+ *               isbn10: "0008537720"
+ *               status: active
+ *     responses:
+ *       200:
+ *         description: OK
+ */
+router.put(
+  "/:bookID",
+  rateLimiters.database,
+  authCheck.isSignIn,
+  authCheck.isAdmin,
+  booksValidator.updateBook,
+  booksController.updateBook
+);
+
+/**
+ * @swagger
+ * /api/books/{bookID}:
+ *   delete:
+ *     summary: Delete Book by ID
+ *     description: Only authorized users can access this endpoint.
+ *     tags: [Books]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: bookID
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: No Content
+ */
+router.delete(
+  "/:bookID",
+  rateLimiters.database,
+  authCheck.isSignIn,
+  authCheck.isAdmin,
+  booksValidator.deleteBook,
+  booksController.deleteBook
+);
+
 export default router;

@@ -1,12 +1,11 @@
 import createError from "http-errors";
-
 import logger from "../helpers/logger.helper.js";
 import postgres from "../database/postgres.database.js";
 
 /**
  * BookRepository class.
  * @class
- * @classdesc Repository class for managing books.
+ * @classdesc Repository class for managing books in the database.
  */
 class BookRepository {
   /**
@@ -59,7 +58,7 @@ class BookRepository {
 
   /**
    * Creates a new book in the database.
-   * @param {object} book - The book object to be created.
+   * @param {object} book - The book object containing book details.
    * @returns {Promise<object>} A promise that resolves to the created book object.
    * @throws {createError.InternalServerError} If the book could not be created.
    */
@@ -158,7 +157,7 @@ class BookRepository {
   /**
    * Retrieves books from the database by ISBN.
    * @param {string} isbn - The ISBN of the book(s) to retrieve.
-   * @returns {Promise<Array<object>>} A promise that resolves to an array of book objects matching the ISBN.
+   * @returns {Promise<object[]>} A promise that resolves to an array of book objects matching the ISBN.
    * @throws {createError.InternalServerError} If there is an error fetching books by ISBN.
    */
   async getBooksByISBN(isbn) {
@@ -166,17 +165,13 @@ class BookRepository {
       let query = {};
 
       if (isbn.length === 10) {
-        query = {
-          isbn10: isbn,
-        };
+        query = { isbn10: isbn };
       } else {
-        query = {
-          isbn13: isbn,
-        };
+        query = { isbn13: isbn };
       }
 
       return await postgres.prisma.book.findMany({
-        where: { ...query },
+        where: query,
         select: {
           id: true,
           title: true,
@@ -203,6 +198,41 @@ class BookRepository {
     } catch (error) {
       logger.error(error);
       throw createError(500, "Could not fetch books by ISBN.");
+    }
+  }
+
+  /**
+   * Updates a book in the database.
+   * @param {object} book - The book object containing updated details.
+   * @returns {Promise<object>} A promise that resolves to the updated book object.
+   * @throws {createError.InternalServerError} If the book could not be updated.
+   */
+  async updateBook(book) {
+    try {
+      return await postgres.prisma.book.update({
+        where: { id: String(book.id) },
+        data: book,
+      });
+    } catch (error) {
+      logger.error(error);
+      throw createError(500, "Could not update book.");
+    }
+  }
+
+  /**
+   * Deletes a book from the database.
+   * @param {string} bookID - The ID of the book to delete.
+   * @returns {Promise<object>} A promise that resolves to the deleted book object.
+   * @throws {createError.InternalServerError} If the book could not be deleted.
+   */
+  async deleteBook(bookID) {
+    try {
+      return await postgres.prisma.book.delete({
+        where: { id: String(bookID) },
+      });
+    } catch (error) {
+      logger.error(error);
+      throw createError(500, "Could not delete book.");
     }
   }
 }
