@@ -66,6 +66,27 @@ class BooksController {
   }
 
   /**
+   * Retrieves a book by its ID.
+   * @param {object} req - The request object.
+   * @param {object} req.params - The route parameters.
+   * @param {string} req.params.bookID - The ID of the book to retrieve.
+   * @param {object} res - The response object.
+   * @param {Function} next - The next middleware function for error handling.
+   * @returns {Promise<void>} A promise that resolves when the book data is retrieved and sent in the response.
+   * @throws {Error} If an error occurs while retrieving the book.
+   */
+  async getBookByID(req, res, next) {
+    try {
+      const bookID = req.params.bookID;
+      const result = await booksService.getBookByID(bookID);
+
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
    * Retrieves a book by its ISBN.
    * @param {object} req - The request object.
    * @param {object} req.params - The route parameters.

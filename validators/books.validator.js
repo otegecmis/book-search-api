@@ -53,7 +53,6 @@ const booksValidator = {
     body("status").trim().notEmpty().withMessage("Status is required."),
     validationCheck,
   ],
-  getBookByISBN: [param("isbn").notEmpty().withMessage("ISBN is required."), validationCheck],
   getBooks: [
     query("currentPage")
       .optional()
@@ -65,6 +64,8 @@ const booksValidator = {
       .withMessage("Per page must be a positive integer."),
     validationCheck,
   ],
+  getBookByID: [sharedValidator.params.bookID, validationCheck],
+  getBookByISBN: [param("isbn").notEmpty().withMessage("ISBN is required."), validationCheck],
   updateBook: [
     sharedValidator.params.bookID,
     body("title").optional().isString().withMessage("Title must be a string."),

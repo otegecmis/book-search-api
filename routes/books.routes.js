@@ -85,7 +85,30 @@ router.get("/", rateLimiters.common, booksValidator.getBooks, booksController.ge
 
 /**
  * @swagger
- * /api/books/{isbn}:
+ * /api/books/{bookID}:
+ *   get:
+ *     summary: Get Book by ID
+ *     tags: [Books]
+ *     parameters:
+ *       - in: path
+ *         name: bookID
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: OK
+ */
+router.get(
+  "/:bookID",
+  rateLimiters.common,
+  booksValidator.getBookByID,
+  booksController.getBookByID
+);
+
+/**
+ * @swagger
+ * /api/books/search/{isbn}:
  *   get:
  *     summary: Get Book by ISBN
  *     tags: [Books]
@@ -100,7 +123,7 @@ router.get("/", rateLimiters.common, booksValidator.getBooks, booksController.ge
  *         description: OK
  */
 router.get(
-  "/:isbn",
+  "/search/:isbn",
   rateLimiters.common,
   booksValidator.getBookByISBN,
   booksController.getBookByISBN
