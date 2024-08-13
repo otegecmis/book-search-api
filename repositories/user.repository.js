@@ -57,6 +57,25 @@ class UserRepository {
       throw createError(500, "Unable to get the email at the moment.");
     }
   }
+
+  /**
+   * Updates a user's details in the database.
+   * @param {string} userID - The ID of the user to update.
+   * @param {object} data - The updated user data.
+   * @returns {Promise<object>} A promise that resolves to the updated user object.
+   * @throws {createError.InternalServerError} If unable to update the user.
+   */
+  async updateUser(userID, data) {
+    try {
+      return await postgres.prisma.user.update({
+        where: { id: String(userID) },
+        data,
+      });
+    } catch (error) {
+      logger.error(error);
+      throw createError(500, "Unable to update the user at the moment.");
+    }
+  }
 }
 
 export default new UserRepository();
