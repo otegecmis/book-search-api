@@ -103,6 +103,31 @@ class AuthController {
       next(error);
     }
   }
+
+  /**
+   * Activates a user account.
+   * @param {object} req - The request object.
+   * @param {object} req.body - The body of the request containing the user's email and password.
+   * @param {string} req.body.email - The email address of the user.
+   * @param {string} req.body.password - The password of the user.
+   * @param {object} res - The response object.
+   * @param {Function} next - The next middleware function for error handling.
+   * @returns {Promise<void>} A promise that resolves when the user's account is activated and a success message is sent in the response.
+   * @throws {Error} If an error occurs during the activation process.
+   */
+  async activate(req, res, next) {
+    try {
+      const user = {
+        email: req.body.email,
+        password: req.body.password,
+      };
+      await authService.activate(user);
+
+      res.status(200).json({ message: "User activated successfully." });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new AuthController();
