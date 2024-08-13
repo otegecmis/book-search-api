@@ -45,7 +45,7 @@ class UsersController {
       const userID = req.params.userID;
 
       if (userID !== req.payload.aud) {
-        return res.status(403).json({ message: "You are not authorized to perform this action." });
+        return res.status(403).json({ message: "You are not authorized to update this user." });
       }
 
       const result = await usersService.updateUser(userID, {
@@ -78,7 +78,9 @@ class UsersController {
       const userID = req.params.userID;
 
       if (userID !== req.payload.aud) {
-        return res.status(403).json({ message: "You are not authorized to perform this action." });
+        return res
+          .status(403)
+          .json({ message: "You are not authorized to update email for this user." });
       }
 
       const result = await usersService.updateEmail(userID, {
@@ -103,7 +105,7 @@ class UsersController {
    * @param {string} req.body.newPassword - The user's new password.
    * @param {Object} res - The response object.
    * @param {Function} next - The next middleware function for error handling.
-   * @returns {Promise<object>} A promise that resolves with the updated password data.
+   * @returns {Promise<void>} A promise that resolves when the password update operation is complete.
    * @throws {Error} If an error occurs while updating the user's password or if the user is not authorized.
    */
   async updatePassword(req, res, next) {
@@ -111,15 +113,17 @@ class UsersController {
       const userID = req.params.userID;
 
       if (userID !== req.payload.aud) {
-        return res.status(403).json({ message: "You are not authorized to perform this action." });
+        return res
+          .status(403)
+          .json({ message: "You are not authorized to update password for this user." });
       }
 
-      const result = await usersService.updatePassword(userID, {
+      await usersService.updatePassword(userID, {
         oldPassword: req.body.oldPassword,
         newPassword: req.body.newPassword,
       });
 
-      res.status(200).json(result);
+      res.status(200).json({ message: "Password updated successfully." });
     } catch (error) {
       next(error);
     }
@@ -140,7 +144,7 @@ class UsersController {
       const userID = req.params.userID;
 
       if (userID !== req.payload.aud) {
-        return res.status(403).json({ message: "You are not authorized to perform this action." });
+        return res.status(403).json({ message: "You are not authorized to deactivate this user." });
       }
 
       await usersService.deactivateUser(userID);
