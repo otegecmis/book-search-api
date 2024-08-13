@@ -76,6 +76,26 @@ class BooksService {
       isbn10: book.isbn10,
     };
   }
+
+  /**
+   * Counts the number of books by a specific author.
+   * @param {string} authorID - The ID of the author whose books are to be counted.
+   * @returns {Promise<number>} A promise that resolves to the number of books by the specified author.
+   * @throws {createError.InternalServerError} If an error occurs while counting the books by the author.
+   */
+  async countBooksByAuthorID(authorID) {
+    return await bookRepository.countBooksByAuthorID(authorID);
+  }
+
+  /**
+   * Counts the number of books by a specific publisher.
+   * @param {string} publisherID - The ID of the publisher whose books are to be counted.
+   * @returns {Promise<number>} A promise that resolves to the number of books by the specified publisher.
+   * @throws {createError.InternalServerError} If an error occurs while counting the books by the publisher.
+   */
+  async countBooksByPublisherID(publisherID) {
+    return await bookRepository.countBooksByPublisherID(publisherID);
+  }
 }
 
 export default new BooksService();
