@@ -30,6 +30,7 @@ class AuthService {
    * @param {object} user - The user object containing email and password.
    * @returns {Promise<object>} A promise that resolves to an object containing the user ID, access token, and refresh token.
    * @throws {createError.Unauthorized} If the email or password is invalid.
+   * @throws {createError.Unauthorized} If the user is not active.
    * @throws {createError.InternalServerError} If an error occurs during sign in.
    */
   async signin(user) {
@@ -43,6 +44,10 @@ class AuthService {
 
     if (!isValidPassword) {
       throw createError.Unauthorized("Invalid email or password.");
+    }
+
+    if (findUser.status !== "active") {
+      throw createError.Unauthorized("User is not active.");
     }
 
     const access_token = await tokenService.createAccessToken(findUser.id);
@@ -85,6 +90,36 @@ class AuthService {
   async signout(refreshToken) {
     const userID = await tokenService.verifyRefreshToken(refreshToken);
     await tokenService.deleteRefreshToken(userID);
+  }
+
+  /**
+   * Activates a user account.
+   * @param {object} user - The user object containing login credentials.
+   * @param {string} user.email - The email address of the user.
+   * @param {string} user.password - The password of the user.
+   * @returns {Promise<void>} A promise that resolves when the user's account is activated.
+   * @throws {createError.Unauthorized} If the email or password is incorrect, or if the user is already active.
+   */
+  async activate(user) {
+    const findUser = await usersService.getUserByEmail(user.email);
+
+    if (!findUser) {
+      throw createError.Unauthorized("Invalid email or password.");
+    }
+
+    const isValidPassword = await usersService.isValidPassword(user.password, findUser.password);
+
+    if (!isValidPassword) {
+      throw createError.Unauthorized("Invalid email or password.");
+    }
+
+    if (findUser.status === "active") {
+      throw createError.Unauthorized("User is already active.");
+    }
+
+    await usersService.updateUser(findUser.id, { status: "active" });
+
+    return;
   }
 }
 

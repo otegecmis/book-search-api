@@ -46,6 +46,7 @@ const authValidator = {
   signin: [sharedValidators.body.email, sharedValidators.body.password, validationCheck],
   refresh: [sharedValidators.body.refreshToken, validationCheck],
   signout: [sharedValidators.body.refreshToken, validationCheck],
+  activate: [sharedValidators.body.email, sharedValidators.body.password, validationCheck],
 };
 
 export default authValidator;

@@ -67,6 +67,32 @@ router.post("/signin", rateLimiters.auth, authValidator.signin, authController.s
 
 /**
  * @swagger
+ * /api/auth/activate:
+ *   put:
+ *     summary: Activate account
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             example:
+ *               email: "namesurname@domain.com"
+ *               password: "123456"
+ *     responses:
+ *       200:
+ *         description: OK
+ */
+router.put("/activate", rateLimiters.auth, authValidator.activate, authController.activate);
+
+/**
+ * @swagger
  * /api/auth/refresh:
  *   put:
  *     summary: Refresh tokens
