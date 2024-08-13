@@ -97,6 +97,9 @@ router.put(
  *               oldEmail: "namesurname@domain.com"
  *               newEmail: "name@domain.com"
  *               password: "123456"
+ *     responses:
+ *       200:
+ *         description: OK
  */
 router.put(
   "/:userID/email",
@@ -134,6 +137,9 @@ router.put(
  *             example:
  *               oldPassword: "123456"
  *               newPassword: "987654"
+ *     responses:
+ *       200:
+ *         description: OK
  */
 router.put(
   "/:userID/password",
