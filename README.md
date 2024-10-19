@@ -1,3 +1,10 @@
-## Book Search API [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/otegecmis/book-search-api/blob/main/LICENSE.md)
+## Book Search API [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/otegecmis/book-search-api/blob/main/LICENSE.md) [![Release](https://github.com/otegecmis/book-search-api/actions/workflows/release.yaml/badge.svg?branch=main)](https://github.com/otegecmis/book-search-api/actions/workflows/release.yaml)
 
-This API, built with `Express.js` under `Node.js`, is designed for searching books. It uses `Redis` for `authentication blacklisting` and `PostgreSQL` with Prisma for data storage. The project follows the `MVC + Service + Repository` pattern for an organized structure. Documentation is provided via `Swagger` and `JSDoc`. Testing is conducted using `Jest` and `SuperTest`. Automated releases and version control are facilitated with `Semantic Release` and `GitHub Actions`.
+A backend RESTful API for book search, built with Node.js and Express.js.
+
+- Built the API with `Node.js` and `Express.js`, using the `MVC + Service + Repository` pattern.
+- Used `PostgreSQL` and `Prisma` ORM for data storage and management.
+- Implemented `Redis` for authentication blacklisting to handle invalid tokens.
+- Documented the API with `Swagger` and `JSDoc` for clear developer references.
+- Wrote unit and integration tests with `Jest` and `SuperTest`.
+- Set up automatic `Semantic Release` using `GitHub Actions` for version management.
