@@ -1,10 +1,10 @@
 import winston from "winston";
 
-import loggerConfig from "../config/logger.config.js";
+import config from "../config/index.config.js";
 
 const fileTransports = {
-  level: loggerConfig.file.level,
-  filename: loggerConfig.file.filename,
+  level: config.logger.file.level,
+  filename: config.logger.file.filename,
   handleExceptions: true,
   format: winston.format.combine(
     winston.format.timestamp(),
@@ -14,7 +14,7 @@ const fileTransports = {
 };
 
 const consoleTransports = {
-  level: loggerConfig.console.level,
+  level: config.logger.console.level,
   handleExceptions: true,
   format: winston.format.combine(
     winston.format.timestamp(),
