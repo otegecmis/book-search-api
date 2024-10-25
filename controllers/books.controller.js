@@ -100,9 +100,9 @@ class BooksController {
   async deleteBook(req, res, next) {
     try {
       const { bookID } = req.params;
-      const result = await booksService.deleteBook(bookID);
+      await booksService.deleteBook(bookID);
 
-      res.status(200).json(result);
+      res.status(204).end();
     } catch (error) {
       next(error);
     }
