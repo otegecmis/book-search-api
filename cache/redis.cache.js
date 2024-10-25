@@ -5,13 +5,11 @@ import logger from "../helpers/logger.helper.js";
 
 /**
  * Redis class.
- * @class
- * @classdesc A class for the Redis cache.
+ * @ignore
  */
 class Redis {
   /**
    * Creates an instance of Redis.
-   * Initializes the Redis client and sets up event listeners for various Redis events.
    */
   constructor() {
     this.client = redis.createClient({
@@ -43,7 +41,6 @@ class Redis {
 
   /**
    * Returns the Redis client instance.
-   * @returns {object} The Redis client instance.
    */
   getClient() {
     return this.client;
