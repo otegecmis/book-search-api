@@ -1,8 +1,15 @@
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 import swaggerUI from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
 import { SwaggerTheme, SwaggerThemeNameEnum } from "swagger-themes";
 
-import packageJSON from "../package.json" assert { type: "json" };
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const packageJSON = JSON.parse(
+  fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8')
+);
 
 const swaggerSpec = swaggerJSDoc({
   definition: {
