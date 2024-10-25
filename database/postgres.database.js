@@ -4,13 +4,11 @@ import logger from "../helpers/logger.helper.js";
 
 /**
  * Postgres class.
- * @class
- * @classdesc A class for the PostgreSQL database.
+ * @ignore
  */
 class Postgres {
   /**
    * Creates an instance of Postgres.
-   * Initializes the Prisma client.
    */
   constructor() {
     this.prisma = new PrismaClient();
@@ -18,8 +16,6 @@ class Postgres {
 
   /**
    * Connects to the PostgreSQL database.
-   * @returns {Promise<void>} A promise that resolves when the connection is established.
-   * @throws {Error} If an error occurs while connecting to the database.
    */
   async connect() {
     try {
@@ -33,8 +29,6 @@ class Postgres {
 
   /**
    * Disconnects from the PostgreSQL database.
-   * @returns {Promise<void>} A promise that resolves when the disconnection is complete.
-   * @throws {Error} If an error occurs while disconnecting from the database.
    */
   async disconnect() {
     try {
