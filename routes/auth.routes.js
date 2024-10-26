@@ -1,12 +1,3 @@
-import express from "express";
-
-import authController from "../controllers/auth.controller.js";
-import authValidator from "../validators/auth.validator.js";
-
-import rateLimiters from "../middleware/rate-limit.middleware.js";
-
-const router = express.Router();
-
 /**
  * @swagger
  * /api/auth/signup:
@@ -36,11 +27,6 @@ const router = express.Router();
  *     responses:
  *       201:
  *         description: Created
- */
-router.post("/signup", rateLimiters.auth, authValidator.signup, authController.signup);
-
-/**
- * @swagger
  * /api/auth/signin:
  *   post:
  *     summary: Sign in
@@ -62,11 +48,6 @@ router.post("/signup", rateLimiters.auth, authValidator.signup, authController.s
  *     responses:
  *       200:
  *         description: OK
- */
-router.post("/signin", rateLimiters.auth, authValidator.signin, authController.signin);
-
-/**
- * @swagger
  * /api/auth/activate:
  *   put:
  *     summary: Activate account
@@ -88,11 +69,6 @@ router.post("/signin", rateLimiters.auth, authValidator.signin, authController.s
  *     responses:
  *       200:
  *         description: OK
- */
-router.put("/activate", rateLimiters.auth, authValidator.activate, authController.activate);
-
-/**
- * @swagger
  * /api/auth/refresh:
  *   put:
  *     summary: Refresh tokens
@@ -112,11 +88,6 @@ router.put("/activate", rateLimiters.auth, authValidator.activate, authControlle
  *     responses:
  *       200:
  *         description: OK
- */
-router.put("/refresh", rateLimiters.auth, authValidator.refresh, authController.refresh);
-
-/**
- * @swagger
  * /api/auth/signout:
  *   delete:
  *     summary: Sign out
@@ -136,6 +107,20 @@ router.put("/refresh", rateLimiters.auth, authValidator.refresh, authController.
  *       200:
  *         description: OK
  */
-router.delete("/signout", rateLimiters.auth, authValidator.signout, authController.signout);
+import express from "express";
+
+import authController from "../controllers/auth.controller.js";
+import authValidator from "../validators/auth.validator.js";
+
+import rateLimiters from "../middleware/rate-limit.middleware.js";
+
+const router = express.Router();
+
+router
+  .post("/signup", rateLimiters.auth, authValidator.signup, authController.signup)
+  .post("/signin", rateLimiters.auth, authValidator.signin, authController.signin)
+  .put("/activate", rateLimiters.auth, authValidator.activate, authController.activate)
+  .put("/refresh", rateLimiters.auth, authValidator.refresh, authController.refresh)
+  .delete("/signout", rateLimiters.auth, authValidator.signout, authController.signout);
 
 export default router;
