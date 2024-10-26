@@ -1,4 +1,4 @@
-## Book Search API [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/otegecmis/book-search-api/blob/main/LICENSE.md) [![Release](https://github.com/otegecmis/book-search-api/actions/workflows/release.yaml/badge.svg?branch=main)](https://github.com/otegecmis/book-search-api/actions/workflows/release.yaml)
+## Book Search API [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/otegecmis/book-search-api/blob/main/LICENSE.md)
 
 A backend RESTful API for book search, built with Node.js and Express.js.
 
@@ -17,7 +17,7 @@ Two types of documentation have been prepared: `Swagger` and `JSDoc.`
 
 To access `Swagger` documentation, make sure the `NODE_ENV` in the .env file is set to `development`.
 
-Then, you can access it via `http://localhost/api/swagger`
+Then, you can access it via `http://localhost:PORT/api/swagger`
 
 <div style="float: left;">
     <img src="assets/1.png" style="width: 60%;" />
