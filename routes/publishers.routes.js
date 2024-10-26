@@ -1,13 +1,3 @@
-import express from "express";
-
-import publishersController from "../controllers/publishers.controller.js";
-import publishersValidator from "../validators/publishers.validator.js";
-
-import rateLimiters from "../middleware/rate-limit.middleware.js";
-import authCheck from "../middleware/auth-check.middleware.js";
-
-const router = express.Router();
-
 /**
  * @swagger
  * /api/publishers:
@@ -34,22 +24,11 @@ const router = express.Router();
  *     responses:
  *       201:
  *         description: Created
- */
-router.post(
-  "/",
-  rateLimiters.database,
-  authCheck.isSignIn,
-  authCheck.isAdmin,
-  publishersValidator.createPublisher,
-  publishersController.createPublisher
-);
-
-/**
- * @swagger
- * /api/publishers:
  *   get:
  *     summary: Get Publishers
  *     tags: [Publishers]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: currentPage
@@ -62,20 +41,12 @@ router.post(
  *     responses:
  *       200:
  *         description: OK
- */
-router.get(
-  "/",
-  rateLimiters.common,
-  publishersValidator.getPublishers,
-  publishersController.getPublishers
-);
-
-/**
- * @swagger
  * /api/publishers/{publisherID}:
  *   get:
  *     summary: Get Publisher by ID
  *     tags: [Publishers]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: publisherID
@@ -85,17 +56,6 @@ router.get(
  *     responses:
  *       200:
  *         description: OK
- */
-router.get(
-  "/:publisherID",
-  rateLimiters.common,
-  publishersValidator.getPublisherByID,
-  publishersController.getPublisherByID
-);
-
-/**
- * @swagger
- * /api/publishers/{publisherID}:
  *   put:
  *     summary: Update Publisher
  *     description:  Only authorized users can access this endpoint.
@@ -125,19 +85,6 @@ router.get(
  *     responses:
  *       200:
  *         description: OK
- */
-router.put(
-  "/:publisherID",
-  rateLimiters.database,
-  authCheck.isSignIn,
-  authCheck.isAdmin,
-  publishersValidator.updatePublisher,
-  publishersController.updatePublisher
-);
-
-/**
- * @swagger
- * /api/publishers/{publisherID}:
  *   delete:
  *     summary: Delete Publisher
  *     description: Only authorized users can access this endpoint.
@@ -154,13 +101,54 @@ router.put(
  *       204:
  *         description: No Content
  */
-router.delete(
-  "/:publisherID",
-  rateLimiters.database,
-  authCheck.isSignIn,
-  authCheck.isAdmin,
-  publishersValidator.deletePublisher,
-  publishersController.deletePublisher
-);
+import express from "express";
+
+import publishersController from "../controllers/publishers.controller.js";
+import publishersValidator from "../validators/publishers.validator.js";
+
+import rateLimiters from "../middleware/rate-limit.middleware.js";
+import authCheck from "../middleware/auth-check.middleware.js";
+
+const router = express.Router();
+
+router
+  .post(
+    "/",
+    rateLimiters.database,
+    authCheck.isSignIn,
+    authCheck.isAdmin,
+    publishersValidator.createPublisher,
+    publishersController.createPublisher
+  )
+  .get(
+    "/",
+    rateLimiters.common,
+    authCheck.isSignIn,
+    publishersValidator.getPublishers,
+    publishersController.getPublishers
+  )
+  .get(
+    "/:publisherID",
+    rateLimiters.common,
+    authCheck.isSignIn,
+    publishersValidator.getPublisherByID,
+    publishersController.getPublisherByID
+  )
+  .put(
+    "/:publisherID",
+    rateLimiters.database,
+    authCheck.isSignIn,
+    authCheck.isAdmin,
+    publishersValidator.updatePublisher,
+    publishersController.updatePublisher
+  )
+  .delete(
+    "/:publisherID",
+    rateLimiters.database,
+    authCheck.isSignIn,
+    authCheck.isAdmin,
+    publishersValidator.deletePublisher,
+    publishersController.deletePublisher
+  );
 
 export default router;
