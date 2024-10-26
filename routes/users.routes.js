@@ -1,19 +1,11 @@
-import express from "express";
-
-import usersController from "../controllers/users.controller.js";
-import usersValidator from "../validators/users.validator.js";
-
-import authCheck from "../middleware/auth-check.middleware.js";
-import rateLimiters from "../middleware/rate-limit.middleware.js";
-
-const router = express.Router();
-
 /**
  * @swagger
  * /api/users/{userID}:
  *   get:
  *     summary: Get User by ID
  *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: userID
@@ -23,12 +15,6 @@ const router = express.Router();
  *     responses:
  *       200:
  *         description: OK
- */
-router.get("/:userID", rateLimiters.common, usersValidator.getUser, usersController.getUser);
-
-/**
- * @swagger
- * /api/users/{userID}:
  *   put:
  *     summary: Update User Information by ID
  *     tags: [Users]
@@ -57,19 +43,22 @@ router.get("/:userID", rateLimiters.common, usersValidator.getUser, usersControl
  *     responses:
  *       200:
  *         description: OK
- */
-router.put(
-  "/:userID",
-  rateLimiters.database,
-  authCheck.isSignIn,
-  usersValidator.updateUser,
-  usersController.updateUser
-);
-
-/**
- * @swagger
+ *   delete:
+ *     summary: Deactivate User by ID
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userID
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: OK
  * /api/users/{userID}/email:
- *   put:
+ *   patch:
  *     summary: Update User Email by ID
  *     tags: [Users]
  *     security:
@@ -100,19 +89,8 @@ router.put(
  *     responses:
  *       200:
  *         description: OK
- */
-router.put(
-  "/:userID/email",
-  rateLimiters.database,
-  authCheck.isSignIn,
-  usersValidator.updateEmail,
-  usersController.updateEmail
-);
-
-/**
- * @swagger
  * /api/users/{userID}/password:
- *   put:
+ *   patch:
  *     summary: Update User Password by ID
  *     tags: [Users]
  *     security:
@@ -141,38 +119,51 @@ router.put(
  *       200:
  *         description: OK
  */
-router.put(
-  "/:userID/password",
-  rateLimiters.database,
-  authCheck.isSignIn,
-  usersValidator.updatePassword,
-  usersController.updatePassword
-);
+import express from "express";
 
-/**
- * @swagger
- * /api/users/{userID}:
- *   delete:
- *     summary: Deactivate User by ID
- *     tags: [Users]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: userID
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: OK
- */
-router.delete(
-  "/:userID",
-  rateLimiters.database,
-  authCheck.isSignIn,
-  usersValidator.deactivateUser,
-  usersController.deactivateUser
-);
+import usersController from "../controllers/users.controller.js";
+import usersValidator from "../validators/users.validator.js";
+
+import authCheck from "../middleware/auth-check.middleware.js";
+import rateLimiters from "../middleware/rate-limit.middleware.js";
+
+const router = express.Router();
+
+router
+  .get(
+    "/:userID",
+    rateLimiters.common,
+    authCheck.isSignIn,
+    usersValidator.getUser,
+    usersController.getUser
+  )
+  .put(
+    "/:userID",
+    rateLimiters.database,
+    authCheck.isSignIn,
+    usersValidator.updateUser,
+    usersController.updateUser
+  )
+  .delete(
+    "/:userID",
+    rateLimiters.database,
+    authCheck.isSignIn,
+    usersValidator.deactivateUser,
+    usersController.deactivateUser
+  )
+  .patch(
+    "/:userID/email",
+    rateLimiters.database,
+    authCheck.isSignIn,
+    usersValidator.updateEmail,
+    usersController.updateEmail
+  )
+  .patch(
+    "/:userID/password",
+    rateLimiters.database,
+    authCheck.isSignIn,
+    usersValidator.updatePassword,
+    usersController.updatePassword
+  );
 
 export default router;
