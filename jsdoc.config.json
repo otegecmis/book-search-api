@@ -17,7 +17,7 @@
     "template": "node_modules/clean-jsdoc-theme"
   },
   "markdown": {
-        "hardwrap": false,
-        "idInHeadings": true
-    }
+    "hardwrap": false,
+    "idInHeadings": true
+  }
 }
