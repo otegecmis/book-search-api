@@ -1,13 +1,3 @@
-import express from "express";
-
-import booksController from "../controllers/books.controller.js";
-import booksValidator from "../validators/books.validator.js";
-
-import rateLimiters from "../middleware/rate-limit.middleware.js";
-import authCheck from "../middleware/auth-check.middleware.js";
-
-const router = express.Router();
-
 /**
  * @swagger
  * /api/books:
@@ -52,22 +42,11 @@ const router = express.Router();
  *     responses:
  *       201:
  *         description: Created
- */
-router.post(
-  "/",
-  rateLimiters.database,
-  authCheck.isSignIn,
-  authCheck.isAdmin,
-  booksValidator.createBook,
-  booksController.createBook
-);
-
-/**
- * @swagger
- * /api/books:
  *   get:
  *     summary: Get Books
  *     tags: [Books]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: currentPage
@@ -80,15 +59,12 @@ router.post(
  *     responses:
  *       200:
  *         description: OK
- */
-router.get("/", rateLimiters.common, booksValidator.getBooks, booksController.getBooks);
-
-/**
- * @swagger
  * /api/books/{bookID}:
  *   get:
  *     summary: Get Book by ID
  *     tags: [Books]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: bookID
@@ -98,40 +74,6 @@ router.get("/", rateLimiters.common, booksValidator.getBooks, booksController.ge
  *     responses:
  *       200:
  *         description: OK
- */
-router.get(
-  "/:bookID",
-  rateLimiters.common,
-  booksValidator.getBookByID,
-  booksController.getBookByID
-);
-
-/**
- * @swagger
- * /api/books/search/{isbn}:
- *   get:
- *     summary: Get Book by ISBN
- *     tags: [Books]
- *     parameters:
- *       - in: path
- *         name: isbn
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: OK
- */
-router.get(
-  "/search/:isbn",
-  rateLimiters.common,
-  booksValidator.getBookByISBN,
-  booksController.getBookByISBN
-);
-
-/**
- * @swagger
- * /api/books/{bookID}:
  *   put:
  *     summary: Update Book by ID
  *     description: Only authorized users can access this endpoint.
@@ -179,19 +121,6 @@ router.get(
  *     responses:
  *       200:
  *         description: OK
- */
-router.put(
-  "/:bookID",
-  rateLimiters.database,
-  authCheck.isSignIn,
-  authCheck.isAdmin,
-  booksValidator.updateBook,
-  booksController.updateBook
-);
-
-/**
- * @swagger
- * /api/books/{bookID}:
  *   delete:
  *     summary: Delete Book by ID
  *     description: Only authorized users can access this endpoint.
@@ -207,14 +136,74 @@ router.put(
  *     responses:
  *       204:
  *         description: No Content
+ * /api/books/search/{isbn}:
+ *   get:
+ *     summary: Get Book by ISBN
+ *     tags: [Books]
+ *     parameters:
+ *       - in: path
+ *         name: isbn
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: OK
  */
-router.delete(
-  "/:bookID",
-  rateLimiters.database,
-  authCheck.isSignIn,
-  authCheck.isAdmin,
-  booksValidator.deleteBook,
-  booksController.deleteBook
-);
+import express from "express";
+
+import booksController from "../controllers/books.controller.js";
+import booksValidator from "../validators/books.validator.js";
+
+import rateLimiters from "../middleware/rate-limit.middleware.js";
+import authCheck from "../middleware/auth-check.middleware.js";
+
+const router = express.Router();
+
+router
+  .post(
+    "/",
+    rateLimiters.database,
+    authCheck.isSignIn,
+    authCheck.isAdmin,
+    booksValidator.createBook,
+    booksController.createBook
+  )
+  .get(
+    "/",
+    rateLimiters.common,
+    authCheck.isSignIn,
+    booksValidator.getBooks,
+    booksController.getBooks
+  )
+  .get(
+    "/:bookID",
+    rateLimiters.common,
+    authCheck.isSignIn,
+    booksValidator.getBookByID,
+    booksController.getBookByID
+  )
+  .put(
+    "/:bookID",
+    rateLimiters.database,
+    authCheck.isSignIn,
+    authCheck.isAdmin,
+    booksValidator.updateBook,
+    booksController.updateBook
+  )
+  .delete(
+    "/:bookID",
+    rateLimiters.database,
+    authCheck.isSignIn,
+    authCheck.isAdmin,
+    booksValidator.deleteBook,
+    booksController.deleteBook
+  )
+  .get(
+    "/search/:isbn",
+    rateLimiters.common,
+    booksValidator.getBookByISBN,
+    booksController.getBookByISBN
+  );
 
 export default router;

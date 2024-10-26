@@ -1,13 +1,3 @@
-import express from "express";
-
-import authorsController from "../controllers/authors.controller.js";
-import authorsValidator from "../validators/authors.validator.js";
-
-import rateLimiters from "../middleware/rate-limit.middleware.js";
-import authCheck from "../middleware/auth-check.middleware.js";
-
-const router = express.Router();
-
 /**
  * @swagger
  * /api/authors:
@@ -34,22 +24,11 @@ const router = express.Router();
  *     responses:
  *       201:
  *         description: Created
- */
-router.post(
-  "/",
-  rateLimiters.database,
-  authCheck.isSignIn,
-  authCheck.isAdmin,
-  authorsValidator.createAuthor,
-  authorsController.createAuthor
-);
-
-/**
- * @swagger
- * /api/authors:
  *   get:
  *     summary: Get Authors
  *     tags: [Authors]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: currentPage
@@ -62,15 +41,12 @@ router.post(
  *     responses:
  *       200:
  *         description: OK
- */
-router.get("/", rateLimiters.common, authorsValidator.getAuthors, authorsController.getAuthors);
-
-/**
- * @swagger
  * /api/authors/{authorID}:
  *   get:
  *     summary: Get Author by ID
  *     tags: [Authors]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: authorID
@@ -80,17 +56,6 @@ router.get("/", rateLimiters.common, authorsValidator.getAuthors, authorsControl
  *     responses:
  *       200:
  *         description: OK
- */
-router.get(
-  "/:authorID",
-  rateLimiters.common,
-  authorsValidator.getAuthorByID,
-  authorsController.getAuthorByID
-);
-
-/**
- * @swagger
- * /api/authors/{authorID}:
  *   put:
  *     summary: Update Author
  *     description: Only authorized users can access this endpoint.
@@ -120,19 +85,6 @@ router.get(
  *     responses:
  *       200:
  *         description: OK
- */
-router.put(
-  "/:authorID",
-  rateLimiters.database,
-  authCheck.isSignIn,
-  authCheck.isAdmin,
-  authorsValidator.updateAuthor,
-  authorsController.updateAuthor
-);
-
-/**
- * @swagger
- * /api/authors/{authorID}:
  *   delete:
  *     summary: Delete Author
  *     description: Only authorized users can access this endpoint.
@@ -149,13 +101,54 @@ router.put(
  *       204:
  *         description: No Content
  */
-router.delete(
-  "/:authorID",
-  rateLimiters.database,
-  authCheck.isSignIn,
-  authCheck.isAdmin,
-  authorsValidator.deleteAuthor,
-  authorsController.deleteAuthor
-);
+import express from "express";
+
+import authorsController from "../controllers/authors.controller.js";
+import authorsValidator from "../validators/authors.validator.js";
+
+import rateLimiters from "../middleware/rate-limit.middleware.js";
+import authCheck from "../middleware/auth-check.middleware.js";
+
+const router = express.Router();
+
+router
+  .post(
+    "/",
+    rateLimiters.database,
+    authCheck.isSignIn,
+    authCheck.isAdmin,
+    authorsValidator.createAuthor,
+    authorsController.createAuthor
+  )
+  .get(
+    "/",
+    rateLimiters.common,
+    authCheck.isSignIn,
+    authorsValidator.getAuthors,
+    authorsController.getAuthors
+  )
+  .get(
+    "/:authorID",
+    rateLimiters.common,
+    authCheck.isSignIn,
+    authorsValidator.getAuthorByID,
+    authorsController.getAuthorByID
+  )
+  .put(
+    "/:authorID",
+    rateLimiters.database,
+    authCheck.isSignIn,
+    authCheck.isAdmin,
+    authorsValidator.updateAuthor,
+    authorsController.updateAuthor
+  )
+  .delete(
+    "/:authorID",
+    rateLimiters.database,
+    authCheck.isSignIn,
+    authCheck.isAdmin,
+    authorsValidator.deleteAuthor,
+    authorsController.deleteAuthor
+  );
 
 export default router;
