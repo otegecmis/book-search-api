@@ -1,8 +1,8 @@
 ## Book Search API [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/otegecmis/book-search-api/blob/main/LICENSE.md)
 
-- A backend API for book search, built with `Node.js`, `Express.js` and `JavaScript.`
+- A backend API for book search, built with `Node.js`, `PostgreSQL`, `Express.js` and `JavaScript.`
 - It follows a `Layered Architecture` (MVC, Service, Repository).
-- Used `PostgreSQL` and `Prisma ORM` for data storage and management.
+- Used `Prisma ORM` for database management.
 - Implemented `Redis` for authentication blacklisting to handle invalid tokens and `JSON Web Token (JWT)` for secure token-based authentication.
 - Documented the API with `Swagger` and `JSDoc` for clear developer references.
 - Wrote unit and integration tests with `Jest` and `SuperTest`.
