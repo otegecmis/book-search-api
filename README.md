@@ -7,7 +7,6 @@
 - Documented the API with `Swagger` and `JSDoc` for clear developer references.
 - Wrote unit and integration tests with `Jest` and `SuperTest`.
 - Set up automatic `Semantic Release` using `GitHub Actions` for version management.
-- Used `Red Hat Dependency Analytics` to scan dependencies for vulnerabilities.
 
 ### 0. Important Note
 
